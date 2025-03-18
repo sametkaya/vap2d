@@ -1,0 +1,15 @@
+# IDE 
+.idea/
+
+# virtual
+.venv/
+
+# python
+__pycache__/
+*.pyc
+
+# cunk
+*.log
+
+Images/
+

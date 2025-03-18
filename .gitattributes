@@ -1,0 +1,4 @@
+*.pth filter=lfs diff=lfs merge=lfs -text
+VAP2D_[[:space:]]Vessel[[:space:]]Analiysis_Program_intro.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+.mp4 filter=lfs diff=lfs merge=lfs -text

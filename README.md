@@ -57,7 +57,7 @@ If you would like to contribute, please follow these steps:
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE). For more details, see the `LICENSE` file.
+This project is licensed under the [GNU GENERAL PUBLIC LICENSE v.3](LICENSE). For more details, see the `LICENSE` file.
 
 ## Contact
 

@@ -1,6 +1,6 @@
 # VAP2D - Visual Analysis Platform for 2D Data
 
-VAP2D is a visual analysis and data processing platform for two-dimensional data. This software allows users to easily analyze, visualize, and extract meaningful insights from 2D data.
+VAP2D is a visual analysis and data processing platform for two-dimensional data. This software allows users to easily analyze, visualize, and extract meaningful insights from 2D data using both traditional methods and deep learning-based object detection techniques.
 
 ## Features
 
@@ -67,9 +67,9 @@ Follow the steps below to get started with this project:
 <img src="doc/screens/scrn_preproces.png" alt="Screen 1" width="300">
 <h4>All view actions</h4>
 <img src="doc/screens/scrn_analyse.png" alt="Screen 1" width="300">
-
 <h4>Report Screen</h4>
 <img src="doc/screens/scrn_report.png" alt="Screen 1" width="300">
+
 ## Contributing
 
 If you would like to contribute, please follow these steps:

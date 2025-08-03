@@ -6,8 +6,7 @@ from PySide6.QtCore import QFileInfo
 from PySide6.QtWidgets import QFileDialog, QWidget
 from fpdf import FPDF
 
-
-
+from GraphicItems.VAP_Point import VAP_Point
 
 
 class ImageOperation(object):
@@ -28,6 +27,54 @@ class ImageOperation(object):
 
 
         return imagePath
+
+    @staticmethod
+    def noktalari_excele_kaydet(dosya_adi, dallanma_noktalari_listesi, tip_noktalari_listesi):
+        """
+        Verilen dallanma ve tip noktası (VAP_Point nesneleri) listelerini
+        bir Excel dosyasına kaydeder. Her nokta (x, y) koordinatı olarak kaydedilir.
+
+        Parametreler:
+        dosya_adi (str): Kaydedilecek Excel dosyasının adı (örneğin, 'analiz_sonuclari.xlsx').
+        dallanma_noktalari_listesi (list): VAP_Point nesnelerinden oluşan dallanma noktaları listesi.
+        tip_noktalari_listesi (list): VAP_Point nesnelerinden oluşan tip noktaları listesi.
+        """
+        try:
+            # VAP_Point nesnelerinden (x, y) koordinatlarını string olarak çıkar
+            # Excel'de '(x, y)' formatında görünmesi için
+            dallanma_koordinatlari = [f"({p.x}, {p.y})" for p in dallanma_noktalari_listesi if isinstance(p, VAP_Point)]
+            tip_koordinatlari = [f"({p.x}, {p.y})" for p in tip_noktalari_listesi if isinstance(p, VAP_Point)]
+
+            # Eğer listeler boşsa veya sadece VAP_Point olmayan elemanlar içeriyorsa,
+            # pandas'a boş listeler geçirelim.
+            if not dallanma_koordinatlari and dallanma_noktalari_listesi:
+                print("Uyarı: 'dallanma_noktalari_listesi' VAP_Point nesneleri içermiyor gibi görünüyor.")
+            if not tip_koordinatlari and tip_noktalari_listesi:
+                print("Uyarı: 'tip_noktalari_listesi' VAP_Point nesneleri içermiyor gibi görünüyor.")
+
+            # Listelerin farklı uzunluklarda olabileceği durumları göz önünde bulundurarak
+            # pandas Serileri oluşturuyoruz.
+            df = pd.DataFrame({
+                'Dallanma Noktaları (x, y)': pd.Series(dallanma_koordinatlari, dtype='object'),
+                'Tip Noktaları (x, y)': pd.Series(tip_koordinatlari, dtype='object')
+            })
+
+            # Dosyanın kaydedileceği tam yolu oluştur (script'in çalıştığı klasör)
+            kayit_yolu = os.path.join(os.getcwd(), dosya_adi.replace('.tif', '.xlsx'))
+
+            # DataFrame'i Excel dosyasına yaz
+            # index=False parametresi, DataFrame indexlerinin Excel'e yazılmasını engeller.
+            df.to_excel(kayit_yolu, index=False, engine='openpyxl')
+            print(f"Veriler başarıyla '{kayit_yolu}' dosyasına kaydedildi.")
+
+        except ImportError:
+            print("Bu fonksiyonun çalışması için 'pandas' ve 'openpyxl' kütüphanelerinin kurulu olması gerekmektedir.")
+            print("Lütfen 'pip install pandas openpyxl' komutu ile kurun.")
+        except AttributeError:
+            # Bu hata genellikle liste elemanları beklenen 'x', 'y' özelliklerine sahip değilse oluşur.
+            print("Hata: Listelerdeki nesneler 'x' ve 'y' özelliklerine sahip VAP_Point nesneleri olmalıdır.")
+        except Exception as e:
+            print(f"Excel dosyasına kaydetme sırasında bir hata oluştu: {e}")
 
     @staticmethod
     def SaveInfos(vap_image, informationDict):
@@ -58,6 +105,7 @@ class ImageOperation(object):
         csv_file_path = os.path.join(report_folder, image_report_name + ".csv")
         csv_file = open(csv_file_path, 'w', newline='')
         csv_writer = csv.writer(csv_file)
+        #csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
 
         all_inf1 = ["vaf(%)", "branch points count", "tip point count", "vein count", "total vein length",
                     "average vein length"]
@@ -96,9 +144,9 @@ class ImageOperation(object):
             try:
                 data_dict['id'] = vap_vein.idn
                 data_dict['length'] = vap_vein.length
-                data_dict['p1.x, p1.y'] = str(vap_points[0].x) + "," + str(vap_points[0].y)
+                data_dict['p1.x, p1.y'] = "[" + str(vap_points[0].x) + "," + str(vap_points[0].y) + "]"
                 data_dict['p1_type'] = vap_points[0].vp_type.name
-                data_dict['p2.x, p2.y'] = str(vap_points[1].x) + "," + str(vap_points[1].y)
+                data_dict['p2.x, p2.y'] = "[" + str(vap_points[1].x) + "," + str(vap_points[1].y) + "]"
                 data_dict['p2_type'] = vap_points[1].vp_type.name
             except:
                 print("An exception occurred")

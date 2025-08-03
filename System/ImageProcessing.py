@@ -241,7 +241,7 @@ def Analyze(image_skel_uint8):
     image_points_padded = np.logical_or(image_skel_padded, image_skel_padded).astype(np.uint8) + branch_pts_img_padded.astype(np.uint8)* 2 + tip_pts_img_padded.astype(np.uint8)
     points= np.concatenate((branch_points,tip_points))
 
-    drawed_skel_img_padded = np.zeros(image_skel_padded.shape[:2], dtype=np.uint8)
+    drawed_skel_img_padded = np.zeros(image_skel_padded.shape[:2], dtype=np.uint16)
     #All 8 directions
     #delta = [(-1, -1), (-1, 0), (-1, 1),
     #         (0, -1), (0, 1),
@@ -340,6 +340,7 @@ def Analyze(image_skel_uint8):
         vap_tip_list = []
         for i, tip in enumerate(tip_objects):
             x, y = tip.ravel()[:2]
+
             vap_tip_list.append(VAP_Point(y - 1, x - 1, VAP_Point_Type.TIP))
 
         #convert branch point to vap_point

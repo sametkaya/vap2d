@@ -70,7 +70,7 @@ def predict_objects_from_image(image_skel_uint8):
     return objects
 
 
-def find_branch_and_tip_points(image_skel_uint8, refined_results):
+def Analayze(image_skel_uint8, refined_results):
     """
     :param image_skel_uint8: Skeletonized binary image.
     :param refined_results: List of refined bounding boxes [(x_min, y_min, x_max, y_max, class_label), ...]
@@ -108,12 +108,13 @@ def find_branch_and_tip_points(image_skel_uint8, refined_results):
                 branch_objects, _ = cv2.findContours(branch_response, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
                 if len(branch_objects) > 0:
+
                     branch_x, branch_y = branch_objects[0][0][0]  # Extract first contour point
                     refined_x = x_min + branch_x - 2 # because one more path, one pah image path, one bound box path
                     refined_y = y_min + branch_y - 2
-                    vap_branch_list.append(VAP_Point(refined_y, refined_x, VAP_Point_Type.BRANCH))
-                    points.append((refined_y+1, refined_x+1))
-                    if image_points_padded[refined_y+1, refined_x+1] == 1:
+                    if image_points_padded[refined_y + 1, refined_x + 1] == 1:
+                        vap_branch_list.append(VAP_Point(refined_y, refined_x, VAP_Point_Type.BRANCH))
+                        points.append((refined_y+1, refined_x+1))
                         image_points_padded[refined_y+1, refined_x+1] += 2
                     break  # Stop searching after the first match
 
@@ -128,15 +129,15 @@ def find_branch_and_tip_points(image_skel_uint8, refined_results):
                     tip_x, tip_y = tip_objects[0][0][0]  # Extract first contour point
                     refined_x = x_min + tip_x-2
                     refined_y = y_min + tip_y-2
-                    vap_tip_list.append(VAP_Point(refined_y, refined_x, VAP_Point_Type.TIP))
-                    points.append((refined_y+1, refined_x+1))
-                    if image_points_padded[refined_y+1, refined_x+1] == 1:
+                    if image_points_padded[refined_y + 1, refined_x + 1] == 1:
+                        vap_tip_list.append(VAP_Point(refined_y, refined_x, VAP_Point_Type.TIP))
+                        points.append((refined_y+1, refined_x+1))
                         image_points_padded[refined_y+1, refined_x+1] += 1
                     break  # Stop searching after the first match
 
 
     #find vein path
-    drawed_skel_img_padded = np.zeros(image_skel_padded.shape[:2], dtype=np.uint8)
+    drawed_skel_img_padded = np.zeros(image_skel_padded.shape[:2], dtype=np.uint16)
     # All 8 directions
     # delta = [(-1, -1), (-1, 0), (-1, 1),
     #         (0, -1), (0, 1),
@@ -237,6 +238,7 @@ def find_branch_and_tip_points(image_skel_uint8, refined_results):
                                 if not is_end:
                                     drawed_skel_img_padded[yy][xx] = scan_vein.idn
                                     vap_point = VAP_Point(yy - 1, xx - 1, VAP_Point_Type.PATH)
+
                                     scan_vein.vap_point_list.append(vap_point)
                                     next_vap_point = VAP_Point(yy, xx, VAP_Point_Type(image_points_padded[yy][xx]))
                                     vap_point_bfs.append(next_vap_point)

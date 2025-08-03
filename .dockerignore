@@ -1,0 +1,31 @@
+# Python virtual environment and cache files
+.venv/
+__pycache__/
+*.pyc
+
+# IDE-specific configuration files
+.idea/
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+doc/
+
+# Data, test and output files/folders
+HFHS13_Denoised_png/
+Images/
+*.xlsx
+*.csv
+*.mp4
+*.log
+
+# Temporary/Test files
+fdsf.py
+grgdfg.py
+
+# Docker files themselves
+Dockerfile
+.dockerignore

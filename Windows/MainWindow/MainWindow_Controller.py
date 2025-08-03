@@ -85,18 +85,22 @@ class MainWindow_Controller():
                 self.ui.gv_image.scene.vap_image.blackPixelCount = blackPixelCount
 
                 vap_vein_list,vap_point_branch_list, vap_point_tip_list= ImageProcessing.Analyze(self.ui.gv_image.scene.vap_image.image_byte8)
+
                 self.ui.gv_image.scene.AddVeins(vap_vein_list)
                 self.ui.gv_image.scene.AddBranchPoints(vap_point_branch_list)
                 self.ui.gv_image.scene.AddTipPoints(vap_point_tip_list)
+
 
                 self.ui.pbtn_menu_report.setEnabled(True)
             elif (self.ui.radioBtn_deepLearning.isChecked()):
                 predicted_results=DeepLearningObjectDetection.predict_objects_from_image(self.ui.gv_image.scene.vap_image.image_byte8)
-                vap_vein_list,vap_point_branch_list, vap_point_tip_list= DeepLearningObjectDetection.find_branch_and_tip_points(self.ui.gv_image.scene.vap_image.image_byte8, predicted_results)
+                vap_vein_list,vap_point_branch_list, vap_point_tip_list= DeepLearningObjectDetection.Analayze(self.ui.gv_image.scene.vap_image.image_byte8, predicted_results)
+
 
                 self.ui.gv_image.scene.AddVeins(vap_vein_list)
                 self.ui.gv_image.scene.AddBranchPoints(vap_point_branch_list)
                 self.ui.gv_image.scene.AddTipPoints(vap_point_tip_list)
+
 
 
         return

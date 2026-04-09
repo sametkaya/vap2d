@@ -28,7 +28,7 @@ class VAP_QGraphicsView(QtWidgets.QGraphicsView):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor("#3a3a3a")))
 
-        # El aracı için değişkenler
+        # Variables for hand/pan tool
         self.isPanning = False
         self.lastPanPoint = None
 

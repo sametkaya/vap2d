@@ -29,52 +29,51 @@ class ImageOperation(object):
         return imagePath
 
     @staticmethod
-    def noktalari_excele_kaydet(dosya_adi, dallanma_noktalari_listesi, tip_noktalari_listesi):
+    def save_points_to_excel(file_name, branch_points_list, tip_points_list):
         """
-        Verilen dallanma ve tip noktası (VAP_Point nesneleri) listelerini
-        bir Excel dosyasına kaydeder. Her nokta (x, y) koordinatı olarak kaydedilir.
+        Saves the given branch and tip point (VAP_Point objects) lists
+        to an Excel file. Each point is saved as (x, y) coordinates.
 
-        Parametreler:
-        dosya_adi (str): Kaydedilecek Excel dosyasının adı (örneğin, 'analiz_sonuclari.xlsx').
-        dallanma_noktalari_listesi (list): VAP_Point nesnelerinden oluşan dallanma noktaları listesi.
-        tip_noktalari_listesi (list): VAP_Point nesnelerinden oluşan tip noktaları listesi.
+        Parameters:
+        file_name (str): Name of the Excel file to save (e.g., 'analysis_results.xlsx').
+        branch_points_list (list): List of branch points consisting of VAP_Point objects.
+        tip_points_list (list): List of tip points consisting of VAP_Point objects.
         """
         try:
-            # VAP_Point nesnelerinden (x, y) koordinatlarını string olarak çıkar
-            # Excel'de '(x, y)' formatında görünmesi için
-            dallanma_koordinatlari = [f"({p.x}, {p.y})" for p in dallanma_noktalari_listesi if isinstance(p, VAP_Point)]
-            tip_koordinatlari = [f"({p.x}, {p.y})" for p in tip_noktalari_listesi if isinstance(p, VAP_Point)]
+            # Extract (x, y) coordinates from VAP_Point objects as strings
+            # To appear in '(x, y)' format in Excel
+            branch_coordinates = [f"({p.x}, {p.y})" for p in branch_points_list if isinstance(p, VAP_Point)]
+            tip_coordinates = [f"({p.x}, {p.y})" for p in tip_points_list if isinstance(p, VAP_Point)]
 
-            # Eğer listeler boşsa veya sadece VAP_Point olmayan elemanlar içeriyorsa,
-            # pandas'a boş listeler geçirelim.
-            if not dallanma_koordinatlari and dallanma_noktalari_listesi:
-                print("Uyarı: 'dallanma_noktalari_listesi' VAP_Point nesneleri içermiyor gibi görünüyor.")
-            if not tip_koordinatlari and tip_noktalari_listesi:
-                print("Uyarı: 'tip_noktalari_listesi' VAP_Point nesneleri içermiyor gibi görünüyor.")
+            # If lists are empty or contain only non-VAP_Point elements,
+            # pass empty lists to pandas.
+            if not branch_coordinates and branch_points_list:
+                print("Warning: 'branch_points_list' does not seem to contain VAP_Point objects.")
+            if not tip_coordinates and tip_points_list:
+                print("Warning: 'tip_points_list' does not seem to contain VAP_Point objects.")
 
-            # Listelerin farklı uzunluklarda olabileceği durumları göz önünde bulundurarak
-            # pandas Serileri oluşturuyoruz.
+            # Create pandas Series considering that lists may have different lengths.
             df = pd.DataFrame({
-                'Dallanma Noktaları (x, y)': pd.Series(dallanma_koordinatlari, dtype='object'),
-                'Tip Noktaları (x, y)': pd.Series(tip_koordinatlari, dtype='object')
+                'Branch Points (x, y)': pd.Series(branch_coordinates, dtype='object'),
+                'Tip Points (x, y)': pd.Series(tip_coordinates, dtype='object')
             })
 
-            # Dosyanın kaydedileceği tam yolu oluştur (script'in çalıştığı klasör)
-            kayit_yolu = os.path.join(os.getcwd(), dosya_adi.replace('.tif', '.xlsx'))
+            # Create full path where file will be saved (script's working directory)
+            save_path = os.path.join(os.getcwd(), file_name.replace('.tif', '.xlsx'))
 
-            # DataFrame'i Excel dosyasına yaz
-            # index=False parametresi, DataFrame indexlerinin Excel'e yazılmasını engeller.
-            df.to_excel(kayit_yolu, index=False, engine='openpyxl')
-            print(f"Veriler başarıyla '{kayit_yolu}' dosyasına kaydedildi.")
+            # Write DataFrame to Excel file
+            # index=False parameter prevents DataFrame indices from being written to Excel.
+            df.to_excel(save_path, index=False, engine='openpyxl')
+            print(f"Data successfully saved to '{save_path}' file.")
 
         except ImportError:
-            print("Bu fonksiyonun çalışması için 'pandas' ve 'openpyxl' kütüphanelerinin kurulu olması gerekmektedir.")
-            print("Lütfen 'pip install pandas openpyxl' komutu ile kurun.")
+            print("The 'pandas' and 'openpyxl' libraries must be installed for this function to work.")
+            print("Please install with 'pip install pandas openpyxl' command.")
         except AttributeError:
-            # Bu hata genellikle liste elemanları beklenen 'x', 'y' özelliklerine sahip değilse oluşur.
-            print("Hata: Listelerdeki nesneler 'x' ve 'y' özelliklerine sahip VAP_Point nesneleri olmalıdır.")
+            # This error usually occurs if list elements don't have expected 'x', 'y' attributes.
+            print("Error: Objects in lists must be VAP_Point objects with 'x' and 'y' attributes.")
         except Exception as e:
-            print(f"Excel dosyasına kaydetme sırasında bir hata oluştu: {e}")
+            print(f"An error occurred while saving to Excel file: {e}")
 
     @staticmethod
     def SaveInfos(vap_image, informationDict, report_type=None):

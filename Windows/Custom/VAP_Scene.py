@@ -72,48 +72,48 @@ class VAP_Scene(QtWidgets.QGraphicsScene):
         self.update()
 
 
-    # BU GÜNCELLENMİŞ METODU KULLANIN
+    # USE THIS UPDATED METHOD
     def save_to_png(self, scale=4.0):
         """
-        Sahnenin içeriğini belirtilen yola çok yüksek kaliteli bir PNG olarak kaydeder.
+        Saves the scene content as a high-quality PNG.
 
-        :param file_path: PNG dosyasının kaydedileceği yol.
-        :param scale: Çıktı çözünürlüğünü artırmak için ölçek faktörü.
-                      Yüksek kalite için 3.0, 4.0 veya daha yüksek bir değer kullanın.
+        :param file_path: Path where the PNG file will be saved.
+        :param scale: Scale factor to increase output resolution.
+                      Use 3.0, 4.0 or higher for high quality.
         """
-        # Sahnedeki tüm öğeleri kaplayan alanı al
+        # Get the bounding area of all items in the scene
         rect = self.itemsBoundingRect()
 
-        # Belirtilen ölçekte bir QImage nesnesi oluştur
+        # Create a QImage object at the specified scale
         target_size = rect.size().toSize() * scale
         image = QImage(target_size, QImage.Format_ARGB32_Premultiplied)
 
-        # Arka planı şeffaf veya siyah yapabilirsiniz.
-        # Şeffaf arka plan için:
+        # You can make the background transparent or black.
+        # For transparent background:
         image.fill(Qt.transparent)
-        # Siyah arka plan için:
+        # For black background:
         # image.fill(Qt.black)
 
-        # QImage üzerine çizim yapmak için bir QPainter oluştur
+        # Create a QPainter to draw on the QImage
         painter = QPainter(image)
 
-        # Kaliteyi en üst düzeye çıkarmak için render ipuçları
+        # Render hints to maximize quality
         painter.setRenderHints(
             QPainter.Antialiasing |
             QPainter.TextAntialiasing |
             QPainter.SmoothPixmapTransform
         )
 
-        # Sahneyi QPainter'a render et
+        # Render the scene to the QPainter
         self.render(painter, source=rect)
 
-        # Painter'ı sonlandır
+        # End the painter
         painter.end()
 
-        # QImage'ı dosyaya kaydet
-        # quality parametresi PNG için sıkıştırma seviyesini belirtir (0=max sıkıştırma, 100=yok).
-        # Görsel kaliteyi etkilemez çünkü PNG kayıpsızdır. -1 varsayılan değerdir.
+        # Save the QImage to file
+        # The quality parameter specifies compression level for PNG (0=max compression, 100=none).
+        # It doesn't affect visual quality because PNG is lossless. -1 is the default value.
         if image.save("dene.png", "PNG", quality=100):
-            print(f"Sahne başarıyla  olarak kaydedildi.")
+            print(f"Scene successfully saved.")
         else:
-            print(f"Hata: Sahne  olarak kaydedilemedi.")
+            print(f"Error: Scene could not be saved.")

@@ -5,9 +5,9 @@ FROM python:3.10-slim
 # Install all essential libraries required for Qt6
 RUN apt-get update && apt-get install -y \
     qt6-base-dev \
-    libgl1-mesa-glx \
+    libgl1 \
     libxkbcommon0 \
-    libegl1-mesa \
+    libegl1 \
     libdbus-1-3 \
     libfontconfig1 \
     libfreetype6 \

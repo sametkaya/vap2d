@@ -22,6 +22,6 @@ class VAP_Vein():
 
 
 if __name__ == "__main__":
-    plist= [[0,0],[1,1],[2,2]] # düz piksel 1, çapraz piksel 1.414 mutlaka iki piksel olması gerekiyor.
+    plist= [[0,0],[1,1],[2,2]] # straight pixel = 1, diagonal pixel = 1.414, requires at least two pixels.
     my_array = np.array(plist)
     print(float(cv2.arcLength(my_array, False)))

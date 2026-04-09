@@ -151,7 +151,7 @@ def Analayze(image_skel_uint8, refined_results):
                     break  # Stop searching after the first match
     import pandas as pd
 
-    # Her birine point_type ekle
+    # Add point_type to each row
     branch_rows = [
         {
             'point_type': 'BRANCH',
@@ -172,7 +172,7 @@ def Analayze(image_skel_uint8, refined_results):
         for t in tip_center_list
     ]
 
-    # Hepsini birleştir
+    # Merge all rows
     all_rows = branch_rows + tip_rows
 
     df = pd.DataFrame(all_rows, columns=['point_type', 'p1.x, p1.y', 'p2.x, p2.y', 'distance'])
@@ -199,7 +199,7 @@ def Analayze(image_skel_uint8, refined_results):
                 for dy, dx in delta:
                     yy, xx = y + dy, x + dx
                     # If the next position hasn't already been looked at and it's white
-                    # sonraki posizyona bakılmamışsa ve işaretlenmemişse
+                    # if next position hasn't been visited and isn't marked
                     if image_points_padded[yy][xx] > 0 and drawed_skel_img_padded[yy][xx] == 0:
                         # vap_vein = VAP_Vein()
                         scan_vein = VAP_Vein(point_id)
@@ -246,7 +246,7 @@ def Analayze(image_skel_uint8, refined_results):
                             if (image_points_padded[yy][xx] == VAP_Point_Type.PATH.value):
 
                                 is_end=False
-                                # tespit edilmemiş dallanma ve uç noktaları bulmak için
+                                # to find undetected branch and end points
                                 # region = image_points_padded[yy - 1:yy + 2, xx - 1:xx + 2]
                                 # padded_region = np.zeros((3, 3), dtype=np.uint8)
                                 # padded_region[:region.shape[0], :region.shape[1]] = region

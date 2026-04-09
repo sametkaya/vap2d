@@ -43,9 +43,7 @@ VAP2D/
 │
 ├── GraphicItems/           # Custom Qt graphic items for visualization
 │
-├── Images/                 # Application icons and assets
-│
-├── Resources/              # Additional resources
+├── Resources/              # Additional resources (icons, styles)
 │
 ├── detectron2/             # Facebook's Detectron2 library
 │                           # Pre-configured for Faster R-CNN object detection

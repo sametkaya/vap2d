@@ -1,3 +1,4 @@
+import math
 from collections import deque
 
 import numpy as np
@@ -91,7 +92,8 @@ def Analayze(image_skel_uint8, refined_results):
     vap_branch_list = []
     vap_tip_list = []
     points=[]
-
+    branch_center_list=[]
+    tip_center_list=[]
     # Process each detected object in `refined_results`
     for (x_min, y_min, x_max, y_max, class_label) in refined_results:
         # Extract local search region
@@ -99,6 +101,11 @@ def Analayze(image_skel_uint8, refined_results):
 
         if bbox_region.size == 0:
             continue
+
+        x_center = (x_min + x_max) // 2
+        y_center = (y_min + y_max) // 2
+
+        bound_box_center_point = (x_center, y_center)
 
         if class_label == "B":  # Branch Point Detection in boundbox
             bbox_region = np.pad(bbox_region, pad_width=1, mode='constant', constant_values=0)
@@ -116,6 +123,10 @@ def Analayze(image_skel_uint8, refined_results):
                         vap_branch_list.append(VAP_Point(refined_y, refined_x, VAP_Point_Type.BRANCH))
                         points.append((refined_y+1, refined_x+1))
                         image_points_padded[refined_y+1, refined_x+1] += 2
+                        refined_point = (refined_x, refined_y)
+                        distance = math.sqrt((bound_box_center_point[0] - refined_point[0]) ** 2 +
+                                             (bound_box_center_point[1] - refined_point[1]) ** 2)
+                        branch_center_list.append((bound_box_center_point,refined_point, distance))
                     break  # Stop searching after the first match
 
         elif class_label == "T":  # Tip Point Detection in boundbox
@@ -133,8 +144,39 @@ def Analayze(image_skel_uint8, refined_results):
                         vap_tip_list.append(VAP_Point(refined_y, refined_x, VAP_Point_Type.TIP))
                         points.append((refined_y+1, refined_x+1))
                         image_points_padded[refined_y+1, refined_x+1] += 1
+                        refined_point = (refined_x, refined_y)
+                        distance = math.sqrt((bound_box_center_point[0] - refined_point[0]) ** 2 +
+                                             (bound_box_center_point[1] - refined_point[1]) ** 2)
+                        tip_center_list.append((bound_box_center_point,refined_point, distance))
                     break  # Stop searching after the first match
+    import pandas as pd
 
+    # Her birine point_type ekle
+    branch_rows = [
+        {
+            'point_type': 'BRANCH',
+            'p1.x, p1.y': f'[{b[0][0]},{b[0][1]}]',
+            'p2.x, p2.y': f'[{b[1][0]},{b[1][1]}]',
+            'distance': b[2]
+        }
+        for b in branch_center_list
+    ]
+
+    tip_rows = [
+        {
+            'point_type': 'TIP',
+            'p1.x, p1.y': f'[{t[0][0]},{t[0][1]}]',
+            'p2.x, p2.y': f'[{t[1][0]},{t[1][1]}]',
+            'distance': t[2]
+        }
+        for t in tip_center_list
+    ]
+
+    # Hepsini birleştir
+    all_rows = branch_rows + tip_rows
+
+    df = pd.DataFrame(all_rows, columns=['point_type', 'p1.x, p1.y', 'p2.x, p2.y', 'distance'])
+    df.to_excel('center_points.xlsx', index=False)
 
     #find vein path
     drawed_skel_img_padded = np.zeros(image_skel_padded.shape[:2], dtype=np.uint16)

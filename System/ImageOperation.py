@@ -77,7 +77,7 @@ class ImageOperation(object):
             print(f"Excel dosyasına kaydetme sırasında bir hata oluştu: {e}")
 
     @staticmethod
-    def SaveInfos(vap_image, informationDict):
+    def SaveInfos(vap_image, informationDict, report_type=None):
         folder_dialog = QFileDialog()
         folder_dialog.setFileMode(QFileDialog.Directory)
         folder_dialog.setOption(QFileDialog.ShowDirsOnly, True)
@@ -87,10 +87,13 @@ class ImageOperation(object):
             selected_folder = os.path.normpath(folder_dialog.selectedFiles()[0])
 
             image_report_name = os.path.splitext(vap_image.image_raw_name)[0]
-            report_folder = os.path.join(selected_folder, image_report_name)
+            if report_type is not None:
+                image_report_name = f"{report_type}_{image_report_name}"
+            report_folder=selected_folder
+            #report_folder = os.path.join(selected_folder, image_report_name)
             # Create the folder if it doesn't exist
-            if not os.path.exists(report_folder):
-                os.makedirs(report_folder)
+            #if not os.path.exists(report_folder):
+            #    os.makedirs(report_folder)
             csv_file_path = ImageOperation.SaveCsv(vap_image, report_folder, image_report_name, informationDict)
             pdf_file_path = ImageOperation.SaveAsPdf(vap_image, report_folder, image_report_name, informationDict)
             return csv_file_path, pdf_file_path
@@ -120,10 +123,10 @@ class ImageOperation(object):
         row = [value for key, value in row_dict.items() if key in field]
         csv_writer.writerow(row)
         csv_writer.writerow([]) #one emty row
-        all_inf2 = ["id", "length", "p1.x, p1.y", "p1_type", "p2.x, p2.y", "p2_type"]
+        all_inf2 = ["id", "length", "p1.x, p1.y", "p1_type", "[p1.x, p1.y],[p2.x, p2.y]", "p2.x, p2.y", "p2_type"]
 
         field = [key for key in informationDict.keys() if informationDict[key] is True and key in all_inf2]
-
+        field.append("[p1.x, p1.y],[p2.x, p2.y]")
         boolDf2IsExist = False
 
         for key in informationDict.keys():
@@ -148,6 +151,7 @@ class ImageOperation(object):
                 data_dict['p1_type'] = vap_points[0].vp_type.name
                 data_dict['p2.x, p2.y'] = "[" + str(vap_points[1].x) + "," + str(vap_points[1].y) + "]"
                 data_dict['p2_type'] = vap_points[1].vp_type.name
+                data_dict['[p1.x, p1.y],[p2.x, p2.y]'] = data_dict['p1.x, p1.y']+","+data_dict['p2.x, p2.y']
             except:
                 print("An exception occurred")
             row = [data_dict[key] for key in field]

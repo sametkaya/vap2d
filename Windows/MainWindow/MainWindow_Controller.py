@@ -100,6 +100,7 @@ class MainWindow_Controller():
                 self.ui.gv_image.scene.AddVeins(vap_vein_list)
                 self.ui.gv_image.scene.AddBranchPoints(vap_point_branch_list)
                 self.ui.gv_image.scene.AddTipPoints(vap_point_tip_list)
+                self.ui.pbtn_menu_report.setEnabled(True)
 
 
 
@@ -150,8 +151,13 @@ class MainWindow_Controller():
             informationDict["length"] = True
             informationDict["p1_type"] = True
             informationDict["p2_type"] = True
-
-            csv_file_path, pdf_file_path = ImageOperation.SaveInfos(self.ui.gv_image.scene.vap_image, informationDict)
+            report_type=None
+            self.ui.gv_image.scene.save_to_png()
+            if self.ui.radioBtn_imgPrcssng.isChecked():
+                report_type="tip"
+            else:
+                report_type="dl"
+            csv_file_path, pdf_file_path = ImageOperation.SaveInfos(self.ui.gv_image.scene.vap_image, informationDict, report_type)
             if csv_file_path!=None:
                 self.ui.wgts_sceneContent.setCurrentWidget(self.ui.page_report)
                 self.load_pdf(pdf_file_path)

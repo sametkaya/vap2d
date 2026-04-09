@@ -1,5 +1,7 @@
+import os
+
 from PySide6 import QtWidgets
-from PySide6.QtGui import QImage, QPixmap, Qt
+from PySide6.QtGui import QImage, QPixmap, Qt, QPainter
 
 from GraphicItems.VAP_Image import VAP_Image
 from GraphicItems.VAP_Point_Graph import VAP_Point_Graph
@@ -70,5 +72,48 @@ class VAP_Scene(QtWidgets.QGraphicsScene):
         self.update()
 
 
+    # BU GÜNCELLENMİŞ METODU KULLANIN
+    def save_to_png(self, scale=4.0):
+        """
+        Sahnenin içeriğini belirtilen yola çok yüksek kaliteli bir PNG olarak kaydeder.
 
+        :param file_path: PNG dosyasının kaydedileceği yol.
+        :param scale: Çıktı çözünürlüğünü artırmak için ölçek faktörü.
+                      Yüksek kalite için 3.0, 4.0 veya daha yüksek bir değer kullanın.
+        """
+        # Sahnedeki tüm öğeleri kaplayan alanı al
+        rect = self.itemsBoundingRect()
 
+        # Belirtilen ölçekte bir QImage nesnesi oluştur
+        target_size = rect.size().toSize() * scale
+        image = QImage(target_size, QImage.Format_ARGB32_Premultiplied)
+
+        # Arka planı şeffaf veya siyah yapabilirsiniz.
+        # Şeffaf arka plan için:
+        image.fill(Qt.transparent)
+        # Siyah arka plan için:
+        # image.fill(Qt.black)
+
+        # QImage üzerine çizim yapmak için bir QPainter oluştur
+        painter = QPainter(image)
+
+        # Kaliteyi en üst düzeye çıkarmak için render ipuçları
+        painter.setRenderHints(
+            QPainter.Antialiasing |
+            QPainter.TextAntialiasing |
+            QPainter.SmoothPixmapTransform
+        )
+
+        # Sahneyi QPainter'a render et
+        self.render(painter, source=rect)
+
+        # Painter'ı sonlandır
+        painter.end()
+
+        # QImage'ı dosyaya kaydet
+        # quality parametresi PNG için sıkıştırma seviyesini belirtir (0=max sıkıştırma, 100=yok).
+        # Görsel kaliteyi etkilemez çünkü PNG kayıpsızdır. -1 varsayılan değerdir.
+        if image.save("dene.png", "PNG", quality=100):
+            print(f"Sahne başarıyla  olarak kaydedildi.")
+        else:
+            print(f"Hata: Sahne  olarak kaydedilemedi.")

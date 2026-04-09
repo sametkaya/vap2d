@@ -15,7 +15,7 @@ __pycache__/
 doc/
 
 # Data, test and output files/folders
-HFHS13_Denoised_png/
+Images/HFHS13_Denoised_png/
 Images/
 *.xlsx
 *.csv

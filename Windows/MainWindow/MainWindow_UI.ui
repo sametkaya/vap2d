@@ -579,7 +579,7 @@ border-radius:10px;
                       <item>
                        <widget class="QCheckBox" name="chbx_analyse_showBranchPathLenght">
                         <property name="text">
-                         <string>Show Lenght</string>
+                         <string>Show Length</string>
                         </property>
                         <property name="checked">
                          <bool>true</bool>

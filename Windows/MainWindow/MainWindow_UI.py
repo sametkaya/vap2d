@@ -519,7 +519,7 @@ class Ui_MainWindow(object):
         self.grpbx_analyse_branchPath.setTitle(QCoreApplication.translate("MainWindow", u"Branch Paths", None))
         self.chbx_analyse_showBranchPaths.setText(QCoreApplication.translate("MainWindow", u"Show Paths", None))
         self.chbx_analyse_showBranchPathId.setText(QCoreApplication.translate("MainWindow", u"Show Id", None))
-        self.chbx_analyse_showBranchPathLenght.setText(QCoreApplication.translate("MainWindow", u"Show Lenght", None))
+        self.chbx_analyse_showBranchPathLenght.setText(QCoreApplication.translate("MainWindow", u"Show Length", None))
         self.pbtn_menu_report.setText(QCoreApplication.translate("MainWindow", u"Report", None))
         self.pbtn_menu_close.setText(QCoreApplication.translate("MainWindow", u"Close", None))
         self.pbtn_prev_page.setText(QCoreApplication.translate("MainWindow", u"< Prev", None))

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Vessel Analiysis Program | Report</string>
+   <string>Vessel Analysis Program | Report</string>
   </property>
   <widget class="QWidget" name="wdgt_sw">
    <property name="styleSheet">

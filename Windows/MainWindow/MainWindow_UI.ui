@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>VAP2D: Vessel Analiysis Program</string>
+   <string>VAP2D: Vessel Analysis Program</string>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonStyle::ToolButtonIconOnly</enum>

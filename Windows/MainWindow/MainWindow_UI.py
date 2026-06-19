@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QGraphicsView,
     QGroupBox, QHBoxLayout, QMainWindow, QPushButton,
     QRadioButton, QSizePolicy, QSpacerItem, QStackedWidget,
     QVBoxLayout, QWidget)
-
+import resoruces_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -499,7 +499,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"VAP2D: Vessel Analiysis Program", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"VAP2D: Vessel Analysis Program", None))
         self.pbtn_menu_loadImage.setText(QCoreApplication.translate("MainWindow", u"Load Image", None))
         self.pbtn_menu_denoise.setText(QCoreApplication.translate("MainWindow", u"Denoise", None))
         self.pbtn_menu_segment.setText(QCoreApplication.translate("MainWindow", u"Segment", None))

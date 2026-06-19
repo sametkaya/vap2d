@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and general support
+    url: https://github.com/sametkaya/vap2d/issues
+    about: For usage questions, please open an issue using one of the templates above, or contact the maintainer by email (skaya@fsm.edu.tr).
+  - name: Email the maintainer
+    url: mailto:skaya@fsm.edu.tr
+    about: For non-developer users or general inquiries that are not bug reports or feature requests.

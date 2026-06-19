@@ -218,7 +218,7 @@ class Caffe2Model(nn.Module):
     def __call__(self, inputs):
         """
         An interface that wraps around a Caffe2 model and mimics detectron2's models'
-        input/output format. See details about the format at :doc:`/tutorials/models`.
+        input/output format. See details about the format at :docs:`/tutorials/models`.
         This is used to compare the outputs of caffe2 model with its original torch model.
 
         Due to the extra conversion between Pytorch/Caffe2, this method is not meant for

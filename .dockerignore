@@ -12,7 +12,7 @@ __pycache__/
 .gitattributes
 
 # Documentation
-doc/
+docs/
 
 # Data, test and output files/folders
 Images/HFHS13_Denoised_png/

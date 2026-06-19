@@ -90,7 +90,7 @@ class DenseDetector(nn.Module):
         Returns:
             In training, dict[str, Tensor]: mapping from a named loss to a tensor storing the
             loss. Used during training only. In inference, the standard output format, described
-            in :doc:`/tutorials/models`.
+            in :docs:`/tutorials/models`.
         """
         images = self.preprocess_image(batched_inputs)
         features = self.backbone(images.tensor)

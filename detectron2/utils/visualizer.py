@@ -345,7 +345,7 @@ class Visualizer:
     To obtain a consistent style, you can implement custom drawing functions with the
     abovementioned primitive methods instead. If you need more customized visualization
     styles, you can process the data yourself following their format documented in
-    tutorials (:doc:`/tutorials/models`, :doc:`/tutorials/datasets`). This class does not
+    tutorials (:docs:`/tutorials/models`, :docs:`/tutorials/datasets`). This class does not
     intend to satisfy everyone's preference on drawing styles.
 
     This visualizer focuses on high rendering quality rather than performance. It is not

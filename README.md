@@ -255,28 +255,28 @@ docker run -e DISPLAY=host.docker.internal:0 sametkaya/vap2d:v2.2
 ## 📸 Screenshots
 
 #### Load raw image
-<img src="doc/screens/scrn1.png" alt="Load Image" width="400">
+<img src="docs/screens/scrn1.png" alt="Load Image" width="400">
 
 #### Denoising
-<img src="doc/screens/scrn2.png" alt="Denoise" width="400">
+<img src="docs/screens/scrn2.png" alt="Denoise" width="400">
 
 #### Segmentation
-<img src="doc/screens/scrn3.png" alt="Segment" width="400">
+<img src="docs/screens/scrn3.png" alt="Segment" width="400">
 
 #### Analysis Results
-<img src="doc/screens/scrn5.png" alt="Analyze" width="400">
+<img src="docs/screens/scrn5.png" alt="Analyze" width="400">
 
 #### Branch Points Detection
-<img src="doc/screens/scrn6.png" alt="Branch Points" width="400">
+<img src="docs/screens/scrn6.png" alt="Branch Points" width="400">
 
 #### Endpoints Detection
-<img src="doc/screens/scrn7.png" alt="Endpoints" width="400">
+<img src="docs/screens/scrn7.png" alt="Endpoints" width="400">
 
 #### Vessel Paths with Length Info
-<img src="doc/screens/scrn8.png" alt="Vessel Paths" width="400">
+<img src="docs/screens/scrn8.png" alt="Vessel Paths" width="400">
 
 #### Report Screen
-<img src="doc/screens/scrn_report.png" alt="Report" width="400">
+<img src="docs/screens/scrn_report.png" alt="Report" width="400">
 
 ---
 

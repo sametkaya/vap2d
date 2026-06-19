@@ -334,7 +334,7 @@ class DefaultPredictor:
         Returns:
             predictions (dict):
                 the output of the model for one image only.
-                See :doc:`/tutorials/models` for details about the format.
+                See :docs:`/tutorials/models` for details about the format.
         """
         with torch.no_grad():  # https://github.com/sphinx-doc/sphinx/issues/4258
             # Apply pre-processing to image.
@@ -376,7 +376,7 @@ class DefaultTrainer(TrainerBase):
        nothing else. You can then add your own hooks if needed. OR:
     3. Write your own training loop similar to `tools/plain_train_net.py`.
 
-    See the :doc:`/tutorials/training` tutorials for more details.
+    See the :docs:`/tutorials/training` tutorials for more details.
 
     Note that the behavior of this class, like other functions/classes in
     this file, is not stable, since it is meant to represent the "common default behavior".

@@ -1,0 +1,5 @@
+vaf(%),branch points count,tip point count,vein count,total vein length,average vein length
+0.016021728515625,0,2,1,47.21320307254791,47.21320307254791
+
+id,"p1.x, p1.y","p2.x, p2.y",length,p1_type,p2_type
+1,"[360,510]","[401,511]",47.21320307254791,TIP,TIP

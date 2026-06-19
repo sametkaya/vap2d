@@ -125,7 +125,6 @@ class ImageOperation(object):
         all_inf2 = ["id", "length", "p1.x, p1.y", "p1_type", "[p1.x, p1.y],[p2.x, p2.y]", "p2.x, p2.y", "p2_type"]
 
         field = [key for key in informationDict.keys() if informationDict[key] is True and key in all_inf2]
-        field.append("[p1.x, p1.y],[p2.x, p2.y]")
         boolDf2IsExist = False
 
         for key in informationDict.keys():
@@ -184,32 +183,49 @@ class ImageOperation(object):
     def AddTableToPdf(pdf, df):
         pdf.ln(10)
 
+        # Fit the table to the printable page width instead of using a fixed
+        # column width (which overflowed the page when many columns were shown).
+        n_cols = max(len(df.columns), 1)
+        usable_width = pdf.w - pdf.l_margin - pdf.r_margin
+        col_w = usable_width / n_cols
+        row_h = 8
+        font_size = 9 if n_cols <= 5 else (8 if n_cols <= 8 else 7)
+
+        def _fit(text):
+            # Shrink overly long cell text so it never spills past its column.
+            text = str(text)
+            if pdf.get_string_width(text) <= col_w - 2:
+                return text
+            while len(text) > 1 and pdf.get_string_width(text + "...") > col_w - 2:
+                text = text[:-1]
+            return text + "..."
 
         # Function to add the header row
         def add_header():
-            pdf.set_font("Arial", "B", 9)
+            pdf.set_font("Arial", "B", font_size)
             pdf.set_text_color(25, 25, 112)
             for title in df.columns:
-                pdf.cell(32, 10, str(title), border=1)
+                pdf.cell(col_w, row_h, _fit(title), border=1, align='C')
             pdf.ln()
 
         # Add the header row initially
         add_header()
 
-        pdf.set_font("Arial", size=9)
+        pdf.set_font("Arial", size=font_size)
         pdf.set_text_color(0, 0, 0)
+        page_bottom = pdf.h - pdf.b_margin - row_h
         for _, row in df.iterrows():
             # Check if the current page is running out of space
-            if pdf.get_y() > 270:  # Adjust this value based on your page layout
+            if pdf.get_y() > page_bottom:
                 pdf.add_page()
-                add_header()  # Add the header row on the new page
-                pdf.set_font("Arial", size=9)
+                add_header()
+                pdf.set_font("Arial", size=font_size)
                 pdf.set_text_color(0, 0, 0)
             for column in df.columns:
                 value = str(row[column])
                 if '.' in value and 'x' not in value:
                     value = str(round(float(value), 3))
-                pdf.cell(32, 10, value, border=1)
+                pdf.cell(col_w, row_h, _fit(value), border=1, align='C')
             pdf.ln()
 
 
